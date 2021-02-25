@@ -1,0 +1,15 @@
+<h1>Users</h1>
+
+<% @users.each do |user| %>
+  <h2>
+    <%= link_to user.name,user_path(user.id) %>
+  </h2>
+
+  <ul>
+  <% user.user_degrees.each do |ud| %>
+    <li>
+      <%= ud.degree.name %>  <%= ud.passing_year %>
+    </li>
+  <% end %>
+  </ul>
+<% end %>

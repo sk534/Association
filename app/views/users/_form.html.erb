@@ -1,5 +1,16 @@
-
+<hr>
 <%= form_for(user) do |f| %>
+  <% if user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+      <ul>
+      <% user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <p><strong>Student Details:</strong></p>
   <div class="row">
     <div class="col">
       <label class="control-label col-sm-5 col-md-4" for="team_membr_fname"> Name <span style="color:Red"></span></label> 
@@ -10,9 +21,24 @@
       <%= f.text_field :mobile ,:required=>true ,:class=>"form-control" %>
     </div>
   </div>
+  <hr>
+  
+    
+  <p><strong>Degree:</strong></p>
+  <div class="row">
+    
+    
+    <%= f.fields_for :user_degrees do |ud| %>      
+      <%= render "degree_fields", f: ud %>     
+    <% end %>
+    <div class='links'>
+      <%= link_to_add_association 'add degree', f, :user_degrees, 
+      wrap_object: Proc.new { |ff| ff.build_degree; ff } %>
+    </div>
+  </div>
   
  
-  <div class="row col" align="center" >
+  <div class="row " align="center" >
     <%= f.submit 'Save',:class=>"btn btn-success" %>
     <button type="reset"  class="btn btn-warning">Reset</button> 
     <%= link_to 'Back', users_path,:class=>"btn btn-primary" %> 
