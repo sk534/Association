@@ -10,8 +10,14 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
-    if  @user.save
+    @user = User.new
+    @user.name=params[:user][:name]
+    @user.mobile=params[:user][:mobile]
+    @user.save
+    params[:user][:user_degrees_attributes].each do |x|
+      UserDegree.create(user_id:@user.id,degree_id:x[1]["degree_id"],passing_year:x[1]["passing_year"])
+    end
+    if  @user.persisted?
       respond_to do |format|
         format.html { redirect_to @user, notice: "User was successfully created."}
         format.json { render :show, status: :created, location: @user }
